@@ -43,6 +43,14 @@ class Circ():
         pygame.draw.circle(self.window, self.color, self.center, self.r, self.width)
 
 
+class Ellipse(Rectangle):
+
+    def __init__(self, window, color, x, y, width=1, length=1, line_width = 0):
+        super().__init__(window, color, x, y, width, length, line_width)
+
+    def draw(self):
+        pygame.draw.ellipse(self.window, self.color, self.rect, self.line_width)
+
 class Polygon():
 
     def __init__(self,window, color, points, width=0):
