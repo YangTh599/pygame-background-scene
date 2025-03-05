@@ -13,6 +13,7 @@ import classes_and_objects.boxes as boxes
 
 def init_game():
     pygame.init()
+    pygame.font.init()
     pygame.display.set_caption(PYGAME_CAPTION) # Window Caption
 
     #Pygame Window
@@ -45,26 +46,29 @@ def main(): # MAIN FUNCTION
     clock = pygame.time.Clock()
     # ADD ALL OBJECTS/CLASSES BELOW HERE
 
-    def draw_amongus(window, color, x, y, flip= False):
+    def draw_amongus(window, color, x, y, scale=1, flip= False):
 
         if flip:
-            amogus_body = shapes.Ellipse(window,color, x , y,300,400)
-            amogus_legs1 = shapes.Rectangle(window, color, x+ 50, y+ 300,50,150)
-            amogus_legs2 = shapes.Rectangle(window, color, x+ 200, y + 300,50,150)
-            amogus_backpack = shapes.Rectangle(window, color, x + 275, y + 50,75,300)
-            glass = shapes.Ellipse(window, CC_BLUE, x-50, y+50 ,300,50)
+            amogus_body = shapes.Ellipse(window,color, x * scale, y * scale,300 *scale,400 * scale)
+            amogus_legs1 = shapes.Rectangle(window, color, (x+ 50)* scale, (y+ 300)* scale,50* scale,150* scale)
+            amogus_legs2 = shapes.Rectangle(window, color, (x+ 200)* scale, (y + 300)* scale,50* scale,150* scale)
+            amogus_backpack = shapes.Rectangle(window, color, (x + 275)* scale, (y + 50)* scale,75* scale,300* scale)
+            glass = shapes.Ellipse(window, CC_BLUE, (x-50)* scale, (y+50)* scale ,300* scale,50* scale)
         else:
-            amogus_body = shapes.Ellipse(window,color, x , y,300,400)
-            amogus_legs1 = shapes.Rectangle(window, color, x+ 50, y+ 300,50,150)
-            amogus_legs2 = shapes.Rectangle(window, color, x+ 200, y + 300,50,150)
-            amogus_backpack = shapes.Rectangle(window, color, x - 50, y + 50,75,300)
-            glass = shapes.Ellipse(window, CC_BLUE, x+50, y+50 ,300,50)
+            amogus_body = shapes.Ellipse(window,color, x* scale , y* scale,300* scale,400* scale)
+            amogus_legs1 = shapes.Rectangle(window, color, (x+ 50)* scale, (y+ 300)* scale,50* scale,150* scale)
+            amogus_legs2 = shapes.Rectangle(window, color, (x+ 200)* scale, (y + 300)* scale,50* scale,150* scale)
+            amogus_backpack = shapes.Rectangle(window, color, (x - 50)* scale, (y + 50)* scale,75* scale,300* scale)
+            glass = shapes.Ellipse(window, CC_BLUE, (x+50)* scale, (y+50)* scale ,300* scale,50* scale)
 
         amongus = [amogus_body,amogus_backpack,amogus_legs1,amogus_legs2,glass]
 
         return amongus
 
-
+    amongus_text = boxes.Text_box(window,10,10,100,50,"Among Us", draw_rect=False, centered=False)
+    scream = boxes.Text_box(window,10,50,100,50,"AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", draw_rect=False, centered=False)
+    amongus = []
+    texts = [amongus_text]
     
     # ADD ALL OBJECTS/CLASSES ABOVE HERE
     run = True
@@ -74,11 +78,27 @@ def main(): # MAIN FUNCTION
 
         #Among us 
 
-        amongus_text = boxes.Text_box(window,10,10,100,50,"Among Us", draw_rect=False, centered=False)
 
-        amongus = [draw_amongus(window,RED,50,200), draw_amongus(window, YELLOW, 300,500,True), draw_amongus(window, PURPLE_GUY, 400,150,True)]
-        texts = [amongus_text]
+        # amongus = [draw_amongus(window,RED,50,200), draw_amongus(window, YELLOW, 300,500,True), draw_amongus(window, PURPLE_GUY, 400,150,True)]
 
+        num = rnd(0,1)
+        if num == 0:
+            flipped = False
+        else:
+            flipped = True
+        amongus.append(draw_amongus(window,rand_color(),rnd(10,600),rnd(10,600),rnd(1,6)/2, flipped))
+
+        if len(amongus) >= 500:
+            amongus.clear()
+
+        if len(amongus) >= 100:
+            
+            if scream not in texts:
+                texts.append(scream)
+
+        else:
+            if scream in texts:
+                texts.remove(scream)
 
         run = handle_events()
         # for event in pygame.event.get():
