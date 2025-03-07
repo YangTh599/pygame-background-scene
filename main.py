@@ -21,10 +21,13 @@ def init_game():
     return window
 
 # Draw Function to update graphics
-def draw(window, shapes, texts):
+def draw(window, shapes, amonguses, texts):
     window.fill(MIDNIGHT_BLUE) # 15
 
-    for amongus in shapes:
+    for shape in shapes:
+        shape.draw()
+
+    for amongus in amonguses:
         for part in amongus:
             part.draw()
 
@@ -64,10 +67,22 @@ def main(): # MAIN FUNCTION
         amongus = [amogus_body,amogus_backpack,amogus_legs1,amogus_legs2,glass]
 
         return amongus
+    
+    def draw_star(window, x, y, color = WHITE):
+        star = shapes.Polygon(window, color, [[x,y],[x+15,y+30],[x+45,y+45],[x+15,y+60],[x,y+90],[x-15,y+60],[x-45,y+45],[x-15,y+30]])
+
+        return star
 
     amongus_text = boxes.Text_box(window,10,10,100,50,"Among Us", draw_rect=False, centered=False)
-    scream = boxes.Text_box(window,10,50,100,50,"AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", draw_rect=False, centered=False)
-    amongus = []
+    thayer_amogus = draw_amongus(window,THAYER_GREEN,75,200,.75)
+    classic_amogus = draw_amongus(window,RED, 400, 300, flip=True)
+
+    star1 = draw_star(window, 350,250)
+    star2 = draw_star(window, 700, 40)
+    star3 = draw_star(window, 350, 550)
+
+    stars = [star1, star2, star3]
+    amongus = [thayer_amogus, classic_amogus]
     texts = [amongus_text]
     
     # ADD ALL OBJECTS/CLASSES ABOVE HERE
@@ -79,26 +94,7 @@ def main(): # MAIN FUNCTION
         #Among us 
 
 
-        # amongus = [draw_amongus(window,RED,50,200), draw_amongus(window, YELLOW, 300,500,True), draw_amongus(window, PURPLE_GUY, 400,150,True)]
-
-        num = rnd(0,1)
-        if num == 0:
-            flipped = False
-        else:
-            flipped = True
-        amongus.append(draw_amongus(window,rand_color(),rnd(10,600),rnd(10,600),rnd(1,6)/2, flipped))
-
-        if len(amongus) >= 500:
-            amongus.clear()
-
-        if len(amongus) >= 100:
-            
-            if scream not in texts:
-                texts.append(scream)
-
-        else:
-            if scream in texts:
-                texts.remove(scream)
+        
 
         run = handle_events()
         # for event in pygame.event.get():
@@ -108,7 +104,7 @@ def main(): # MAIN FUNCTION
         
 
         
-        draw(window, amongus, texts) # UPDATES SCREEN
+        draw(window,stars, amongus, texts) # UPDATES SCREEN
 
     pygame.quit()
     quit()
